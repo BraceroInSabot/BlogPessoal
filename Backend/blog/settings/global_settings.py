@@ -1,5 +1,6 @@
 from pathlib import Path
 from os import getenv
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -16,6 +17,7 @@ INSTALLED_APPS = [
 ] + [
     'rest_framework',
     'corsheaders',
+    'apps.APIUser',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +63,23 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": {
+        "rest_framework.permissions.IsAuthenticated",
+    },
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+    "USER_ID_FIELD": "user_id",
+    "AUTH_ERROR_MESSAGES": {
+        'no_active_account': 'As credenciais fornecidas estão incorretas ou a conta está inativa.'
+    }
+}
+
+AUTH_USER_MODEL = "APIUser.AbsUser"
 
 LANGUAGE_CODE = 'en-us'
 
